@@ -1,5 +1,5 @@
 // src/components/DatabasePopup.js
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 
 const ConfigDBDD = ({ show, handleClose }) => {
@@ -29,13 +29,15 @@ const ConfigDBDD = ({ show, handleClose }) => {
             Select a Database
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body className="d-flex flex-wrap justify-content-center gap-3 py-4">
+        <Modal.Body className="d-flex flex-wrap justify-content-center gap-3 py-4 border-3">
           {dbOptions.map((db) => (
             <Button
               key={db}
-              variant={selectedDB === db ? "primary" : "outline-primary"}
               onClick={() => handleSelect(db)}
-              className="px-4 py-2 rounded-pill hover-float"
+              variant={selectedDB === db ? "primary" : "light"}
+              className={`flex-fill m-1 px-3 py-2 rounded-3 shadow-sm border ${
+                selectedDB === db ? "text-white" : "text-primary"
+              }`}
             >
               {db}
             </Button>

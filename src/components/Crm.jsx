@@ -30,9 +30,11 @@ const CrmModal = forwardRef((props, ref) => {
         {["Salesforce", "MySQL", "Mongo"].map((option) => (
           <Button
             key={option}
-            variant={selectedCRM === option ? "info" : "outline-info"}
             onClick={() => handleSelect(option)}
-            className="px-4 py-2 crm-button"
+            variant={selectedCRM === option ? "primary" : "light"}
+            className={`flex-fill m-1 px-3 py-2 rounded-3 shadow-sm border ${
+              selectedCRM === option ? "text-white" : "text-primary"
+            }`}
           >
             {option}
           </Button>

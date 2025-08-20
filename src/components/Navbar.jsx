@@ -1,26 +1,37 @@
-import {
-  Container,
-  Nav,
-  Navbar as BootstrapNavbar,
-  NavDropdown,
-} from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { NavDropdown, NavLink } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import React, { useRef } from "react";
-
+import { useRef } from "react";
 import { useState } from "react";
-import CrmModal from "./CrmDD.jsx";
-import ConfigDBDD from "./ConfigDBDD.jsx";
+
+import CrmModal from "./Crm.jsx";
+import ConfigDBDD from "./Database.jsx";
 import SnowflakeLogin from "./SnowflakeLogin.jsx";
+
+import ConnectToCrm from "./ConnectToCRM.jsx";
+import ConnectToDB from "./ConnectToDB.jsx";
+import Upload from "./Upload.jsx";
+
 function Navbar() {
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
 
   const crmModalRef = useRef();
-
   const [showDatabasePopup, setShowDatabasePopup] = useState(false);
-
   const [showLogin, setShowLogin] = useState(false);
+
+  const [showConnectToCrm, setShowConnectToCrm] = useState(false);
+  const [showConnectToDB, setShowConnectToDB] = useState(false);
+  const [showUpload, setShowUpload] = useState(false);
+
+  const handleConfigSelect = (action) => {
+    action();
+    setShow(false);
+  };
+
+  const handleDatasourceSelect = (action) => {
+    action();
+    setShow2(false);
+  };
 
   return (
     <nav
@@ -30,7 +41,7 @@ function Navbar() {
       <div className="container-fluid d-flex justify-content-between align-items-center">
         {/* Left: Logo */}
         <div className="d-flex align-items-center">
-          <a className="navbar-brand text-white fw-bold" href="#">
+          <a className="navbar-brand text-white fw-bold" href="/">
             Kasmo CDP
           </a>
         </div>
@@ -39,9 +50,18 @@ function Navbar() {
         <div className="d-none d-lg-flex">
           <ul className="navbar-nav mx-auto gap-4">
             <li className="nav-item">
-              <a className="nav-link active text-white " href="#">
+              <NavLink
+                href="/"
+                className="nav-link active text-white "
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.textDecoration = "underline")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.textDecoration = "none")
+                }
+              >
                 Home
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
               <NavDropdown
@@ -53,7 +73,15 @@ function Navbar() {
               >
                 <NavDropdown.Item
                   as={Link}
-                  onClick={() => crmModalRef?.current?.open()}
+                  onClick={() =>
+                    handleConfigSelect(() => crmModalRef?.current?.open())
+                  }
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.textDecoration = "underline")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.textDecoration = "none")
+                  }
                 >
                   CRM
                 </NavDropdown.Item>
@@ -61,7 +89,15 @@ function Navbar() {
 
                 <NavDropdown.Item
                   as={Link}
-                  onClick={() => setShowDatabasePopup(true)}
+                  onClick={() =>
+                    handleConfigSelect(() => setShowDatabasePopup(true))
+                  }
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.textDecoration = "underline")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.textDecoration = "none")
+                  }
                 >
                   Database
                 </NavDropdown.Item>
@@ -69,9 +105,20 @@ function Navbar() {
                   show={showDatabasePopup}
                   handleClose={() => setShowDatabasePopup(false)}
                 />
-                <NavDropdown.Item as={Link} onClick={() => setShowLogin(true)}>
+
+                <NavDropdown.Item
+                  as={Link}
+                  onClick={() => handleConfigSelect(() => setShowLogin(true))}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.textDecoration = "underline")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.textDecoration = "none")
+                  }
+                >
                   Snowflake Login
                 </NavDropdown.Item>
+
                 <SnowflakeLogin
                   show={showLogin}
                   handleClose={() => setShowLogin(false)}
@@ -86,19 +133,81 @@ function Navbar() {
                 onMouseEnter={() => setShow2(true)}
                 onMouseLeave={() => setShow2(false)}
               >
-                <NavDropdown.Item as={Link} to="/#">
+                <NavDropdown.Item
+                  as={Link}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.textDecoration = "underline")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.textDecoration = "none")
+                  }
+                  onClick={() =>
+                    handleDatasourceSelect(() => setShowConnectToCrm(true))
+                  }
+                >
                   Connect to CRM
                 </NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/#">
+                <ConnectToCrm
+                  show={showConnectToCrm}
+                  handleClose={() => setShowConnectToCrm(false)}
+                />
+                <NavDropdown.Item
+                  as={Link}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.textDecoration = "underline")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.textDecoration = "none")
+                  }
+                  onClick={() =>
+                    handleDatasourceSelect(() => {
+                      setShowConnectToDB(true);
+                    })
+                  }
+                >
                   Connect to DB
                 </NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/#">
+                <ConnectToDB
+                  show={showConnectToDB}
+                  handleClose={() => {
+                    setShowConnectToDB(false);
+                  }}
+                />
+                <NavDropdown.Item
+                  as={Link}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.textDecoration = "underline")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.textDecoration = "none")
+                  }
+                  onClick={() =>
+                    handleDatasourceSelect(() => {
+                      setShowUpload(true);
+                    })
+                  }
+                >
                   Upload
                 </NavDropdown.Item>
+                <Upload
+                  show={showUpload}
+                  handleClose={() => {
+                    setShowUpload(false);
+                  }}
+                />
               </NavDropdown>
             </li>
             <li className="nav-item">
-              <a className="nav-link text-white" href="#">
+              <a
+                className="nav-link text-white"
+                href="/user-experience"
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.textDecoration = "underline")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.textDecoration = "none")
+                }
+              >
                 User Experience
               </a>
             </li>
@@ -107,8 +216,19 @@ function Navbar() {
 
         {/* Right: Buttons */}
         <div className="d-flex align-items-center">
-          <button className="btn btn-dark me-2">Login</button>
-          <button className="btn btn-warning fw-semibold">Request Demo</button>
+          <button
+            className="btn btn-dark me-2"
+            onClick={() => {
+              setShowLogin(true);
+            }}
+          >
+            Login
+          </button>
+          <a href="/request-demo">
+            <button className="btn btn-warning fw-semibold">
+              Request Demo
+            </button>
+          </a>
         </div>
       </div>
     </nav>
